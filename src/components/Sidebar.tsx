@@ -7,7 +7,6 @@ import {
   Package,
   Settings,
   ShoppingBag,
-  User,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -26,7 +25,7 @@ interface MenuGroup {
   items: MenuItem[];
 }
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   const menuList = MenuList;
   return (
     <aside className="w-full h-full flex flex-col bg-gray-800 text-white">
