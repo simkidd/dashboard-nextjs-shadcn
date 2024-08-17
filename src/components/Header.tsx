@@ -13,6 +13,7 @@ import { MenuList } from "./Sidebar";
 import { ThemeToggler } from "./ThemeToggler";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Notification {
   text: string;
@@ -21,6 +22,9 @@ interface Notification {
 }
 
 const Header = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       text: "This is a notification",
@@ -41,6 +45,8 @@ const Header = () => {
 
   const menuList = MenuList;
 
+  const isActive = (href: string) => pathname === href;
+
   return (
     <div className="w-full bg-gray-800 sticky top-0 z-[5] flex items-center">
       <div className="px-4">
@@ -51,7 +57,7 @@ const Header = () => {
               <span className="sr-only">Toggle Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[250px] p-0">
+          <SheetContent side="left" className="w-[250px] p-0 border-0">
             <aside className="w-full h-full flex flex-col bg-gray-800 text-white">
               <div className="px-6 py-4">
                 <h2 className="text-xl font-bold">Dashboard</h2>
@@ -68,7 +74,11 @@ const Header = () => {
                           <SheetClose asChild>
                             <Link
                               href={link}
-                              className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-700 transition-colors"
+                              className={`flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-700 transition-colors ${
+                                isActive(link)
+                                  ? "bg-gray-700 text-white"
+                                  : "hover:bg-gray-700"
+                              }`}
                             >
                               <span>{icon}</span>
                               <span className="text-sm">{name}</span>
@@ -95,6 +105,7 @@ const Header = () => {
                 <Button
                   variant="outline"
                   className="mt-4 w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-red-500 hover:bg-red-700 hover:text-white transition-colors"
+                  onClick={() => router.push("/login")}
                 >
                   <span>Logout</span>
                 </Button>

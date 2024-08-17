@@ -1,18 +1,34 @@
 "use client";
 import {
+  ArchiveIcon,
+  BarChartIcon,
   BellIcon,
+  CalendarIcon,
   CreditCard,
+  CreditCardIcon,
+  HomeIcon,
   Inbox,
+  LayersIcon,
   LineChart,
   Package,
+  PackageIcon,
+  PercentIcon,
   Settings,
+  SettingsIcon,
   ShoppingBag,
+  ShoppingCartIcon,
+  TagIcon,
+  TagsIcon,
+  TrendingUpIcon,
+  TruckIcon,
+  UserIcon,
+  UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface MenuItem {
   link: string;
@@ -27,7 +43,13 @@ interface MenuGroup {
 }
 
 const Sidebar: React.FC = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const menuList = MenuList;
+
+  const isActive = (href: string) => pathname === href;
+
   return (
     <aside className="w-full h-full flex flex-col bg-gray-800 text-white">
       <div className="px-6 py-4">
@@ -44,7 +66,11 @@ const Sidebar: React.FC = () => {
                 <li key={j}>
                   <Link
                     href={link}
-                    className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-700 transition-colors"
+                    className={`flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-gray-700 transition-colors ${
+                      isActive(link)
+                        ? "bg-gray-700 text-white"
+                        : "hover:bg-gray-700"
+                    }`}
                   >
                     <span>{icon}</span>
                     <span className="text-sm">{name}</span>
@@ -70,7 +96,7 @@ const Sidebar: React.FC = () => {
         <Button
           variant="outline"
           className="mt-4 w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-red-500 hover:bg-red-700 hover:text-white transition-colors"
-          onClick={() => useRouter().push("/login")}
+          onClick={() => router.push("/login")}
         >
           <span>Logout</span>
         </Button>
@@ -87,27 +113,9 @@ export const MenuList: MenuGroup[] = [
     items: [
       {
         link: "/",
-        icon: <LineChart />,
+        icon: <HomeIcon />,
         name: "Overview",
-        tooltip: "View overall performance and metrics",
-      },
-      {
-        link: "/sales",
-        icon: <ShoppingBag />,
-        name: "Sales",
-        tooltip: "Monitor sales statistics and trends",
-      },
-      {
-        link: "/orders",
-        icon: <Inbox />,
-        name: "Orders",
-        tooltip: "Manage and view customer orders",
-      },
-      {
-        link: "/activity",
-        icon: <BellIcon />,
-        name: "Activity",
-        tooltip: "Track recent activities and system logs",
+        tooltip: "Overview of the store's performance",
       },
     ],
   },
@@ -116,27 +124,50 @@ export const MenuList: MenuGroup[] = [
     items: [
       {
         link: "/products",
-        icon: <Package />,
-        name: "Product Management",
-        tooltip: "Manage product details and inventory",
+        icon: <PackageIcon />,
+        name: "All Products",
+        tooltip: "View and manage all products",
       },
       {
-        link: "/categories",
-        icon: <CreditCard />,
-        name: "Categories",
-        tooltip: "Organize products into categories",
+        link: "/products/categories",
+        icon: <TagsIcon />,
+        name: "Product Categories",
+        tooltip: "Manage product categories",
+      },
+      {
+        link: "/products/groups",
+        icon: <LayersIcon />,
+        name: "Product Groups",
+        tooltip: "Manage product groups",
       },
       {
         link: "/brands",
-        icon: <CreditCard />,
+        icon: <TagIcon />,
         name: "Brands",
         tooltip: "Manage product brands",
       },
+    ],
+  },
+  {
+    group: "Sales",
+    items: [
       {
-        link: "/reviews",
-        icon: <CreditCard />,
-        name: "Reviews",
-        tooltip: "View and manage product reviews",
+        link: "/sales/orders",
+        icon: <ShoppingCartIcon />,
+        name: "Orders",
+        tooltip: "Manage customer orders",
+      },
+      {
+        link: "/sales/customers",
+        icon: <UsersIcon />,
+        name: "Customers",
+        tooltip: "View and manage customers",
+      },
+      {
+        link: "/sales/discounts",
+        icon: <PercentIcon />,
+        name: "Discounts",
+        tooltip: "Manage discount offers",
       },
     ],
   },
@@ -144,39 +175,50 @@ export const MenuList: MenuGroup[] = [
     group: "Inventory",
     items: [
       {
-        link: "/inventory",
-        icon: <Package />,
-        name: "Stock Levels",
-        tooltip: "Check and manage stock levels",
+        link: "/inventory/stock",
+        icon: <ArchiveIcon />,
+        name: "Stock Management",
+        tooltip: "Manage product stock levels",
       },
       {
-        link: "/inventory/adjustments",
-        icon: <CreditCard />,
-        name: "Adjustments",
-        tooltip: "Adjust inventory quantities",
-      },
-      {
-        link: "/inventory/warehouse",
-        icon: <Package />,
-        name: "Warehouse",
-        tooltip: "Manage warehouse locations",
+        link: "/inventory/suppliers",
+        icon: <TruckIcon />,
+        name: "Suppliers",
+        tooltip: "Manage suppliers",
       },
     ],
   },
   {
-    group: "Orders",
+    group: "Analytics",
     items: [
       {
-        link: "/orders",
-        icon: <Inbox />,
-        name: "Order Management",
-        tooltip: "Manage customer orders and order status",
+        link: "/analytics/sales",
+        icon: <BarChartIcon />,
+        name: "Sales Reports",
+        tooltip: "View sales analytics",
       },
       {
-        link: "/returns",
-        icon: <CreditCard />,
-        name: "Returns",
-        tooltip: "Handle product returns and exchanges",
+        link: "/analytics/top-selling",
+        icon: <TrendingUpIcon />,
+        name: "Top Selling Products",
+        tooltip: "View top selling products",
+      },
+      {
+        link: "/analytics/monthly",
+        icon: <CalendarIcon />,
+        name: "Monthly Reports",
+        tooltip: "View monthly performance",
+      },
+    ],
+  },
+  {
+    group: "Notifications",
+    items: [
+      {
+        link: "/notifications",
+        icon: <BellIcon />,
+        name: "Notifications",
+        tooltip: "View notifications",
       },
     ],
   },
@@ -184,51 +226,22 @@ export const MenuList: MenuGroup[] = [
     group: "Settings",
     items: [
       {
-        link: "/settings/general",
-        icon: <Settings />,
-        name: "General Settings",
-        tooltip: "Adjust general application settings",
+        link: "/settings/profile",
+        icon: <UserIcon />,
+        name: "Profile Settings",
+        tooltip: "Manage user profile settings",
       },
       {
-        link: "/settings/security",
-        icon: <CreditCard />,
-        name: "Security",
-        tooltip: "Update security and access settings",
+        link: "/settings/store",
+        icon: <SettingsIcon />,
+        name: "Store Settings",
+        tooltip: "Configure store settings",
       },
       {
-        link: "/settings/notifications",
-        icon: <BellIcon />,
-        name: "Notifications",
-        tooltip: "Configure notification preferences",
-      },
-      {
-        link: "/settings/integrations",
-        icon: <CreditCard />,
-        name: "Integrations",
-        tooltip: "Manage third-party integrations",
-      },
-    ],
-  },
-  {
-    group: "Support",
-    items: [
-      {
-        link: "/support/tickets",
-        icon: <Inbox />,
-        name: "Support Tickets",
-        tooltip: "View and respond to support tickets",
-      },
-      {
-        link: "/support/faq",
-        icon: <BellIcon />,
-        name: "FAQ",
-        tooltip: "Frequently Asked Questions",
-      },
-      {
-        link: "/support/contact",
-        icon: <CreditCard />,
-        name: "Contact Support",
-        tooltip: "Get in touch with customer support",
+        link: "/settings/payment",
+        icon: <CreditCardIcon />,
+        name: "Payment Methods",
+        tooltip: "Manage payment methods",
       },
     ],
   },

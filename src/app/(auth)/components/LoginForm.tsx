@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
+
   return (
     <div className="grid gap-4">
       <div className="grid gap-2">
@@ -28,7 +30,7 @@ const LoginForm = () => {
       <Button
         type="submit"
         className="w-full"
-        onClick={() => useRouter().push("/")}
+        onClick={() => router.push("/")}
       >
         Login
       </Button>
