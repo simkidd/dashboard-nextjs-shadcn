@@ -12,6 +12,7 @@ import Link from "next/link";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 interface MenuItem {
   link: string;
@@ -69,6 +70,7 @@ const Sidebar: React.FC = () => {
         <Button
           variant="outline"
           className="mt-4 w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-red-500 hover:bg-red-700 hover:text-white transition-colors"
+          onClick={() => useRouter().push("/login")}
         >
           <span>Logout</span>
         </Button>
