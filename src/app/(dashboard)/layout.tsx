@@ -34,7 +34,7 @@ export default function RootLayout({
             </div>
             <main className="w-full min-h-dvh lg:pl-[250px] pl-0">
               <Header />
-              <div className="p-8">{children}</div>
+              <div className="p-8 px-4 lg:px-8">{children}</div>
             </main>
           </div>
         </ThemeProvider>
